@@ -1,0 +1,238 @@
+#include <iostream>
+
+using namespace std;
+
+// Struktura węzła listy
+struct Node {
+    int data;
+    Node* next;
+    Node* prev;
+    
+    Node(int value) : data(value), next(nullptr), prev(nullptr) {}
+};
+
+// Klasa implementująca listę dwukierunkową
+class DoublyLinkedList {
+private:
+    Node* head;
+    Node* tail;
+
+public:
+    // Konstruktor inicjalizujący pustą listę
+    DoublyLinkedList() : head(nullptr), tail(nullptr) {}
+
+    // Destruktor, który usuwa wszystkie węzły
+    ~DoublyLinkedList() {
+        clear();
+    }
+
+    // Dodanie elementu na początek listy
+    void addFront(int value) {
+        Node* newNode = new Node(value);
+        if (head == nullptr) { // Lista jest pusta
+            head = tail = newNode;
+        } else {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+    }
+
+    // Dodanie elementu na koniec listy
+    void addBack(int value) {
+        Node* newNode = new Node(value);
+        if (tail == nullptr) { // Lista jest pusta
+            head = tail = newNode;
+        } else {
+            newNode->prev = tail;
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // Dodanie elementu pod wskazany indeks
+    void addAtIndex(int index, int value) {
+        if (index == 0) {
+            addFront(value);
+            return;
+        }
+
+        Node* newNode = new Node(value);
+        Node* current = head;
+        int count = 0;
+
+        while (current != nullptr && count < index) {
+            current = current->next;
+            count++;
+        }
+
+        if (current == nullptr) { // Dodanie na koniec listy
+            addBack(value);
+        } else {
+            newNode->next = current;
+            newNode->prev = current->prev;
+
+            if (current->prev != nullptr) {
+                current->prev->next = newNode;
+            }
+
+            current->prev = newNode;
+        }
+    }
+
+    // Usunięcie elementu z początku listy
+    void removeFront() {
+        if (head == nullptr) return; // Lista jest pusta
+
+        Node* temp = head;
+        if (head == tail) {
+            head = tail = nullptr; // Lista miała tylko jeden element
+        } else {
+            head = head->next;
+            head->prev = nullptr;
+        }
+
+        delete temp;
+    }
+
+    // Usunięcie elementu z końca listy
+    void removeBack() {
+        if (tail == nullptr) return; // Lista jest pusta
+
+        Node* temp = tail;
+        if (head == tail) {
+            head = tail = nullptr; // Lista miała tylko jeden element
+        } else {
+            tail = tail->prev;
+            tail->next = nullptr;
+        }
+
+        delete temp;
+    }
+
+    // Usunięcie elementu pod wskazanym indeksem
+    void removeAtIndex(int index) {
+        if (index == 0) {
+            removeFront();
+            return;
+        }
+
+        Node* current = head;
+        int count = 0;
+
+        while (current != nullptr && count < index) {
+            current = current->next;
+            count++;
+        }
+
+        if (current == nullptr) return; // Indeks poza zakresem
+
+        if (current->prev != nullptr) {
+            current->prev->next = current->next;
+        }
+
+        if (current->next != nullptr) {
+            current->next->prev = current->prev;
+        }
+
+        delete current;
+    }
+
+    // Wyświetlenie całej listy
+    void display() const {
+        Node* current = head;
+        while (current != nullptr) {
+            cout << current->data << " ";
+            current = current->next;
+        }
+        cout << endl;
+    }
+
+    // Wyświetlenie listy w odwrotnej kolejności
+    void displayReverse() const {
+        Node* current = tail;
+        while (current != nullptr) {
+            cout << current->data << " ";
+            current = current->prev;
+        }
+        cout << endl;
+    }
+
+    // Wyświetlenie następnego elementu po danym elemencie (indeks)
+    void displayNext(int index) const {
+        Node* current = head;
+        int count = 0;
+
+        while (current != nullptr && count < index) {
+            current = current->next;
+            count++;
+        }
+
+        if (current != nullptr && current->next != nullptr) {
+            cout << "Next element: " << current->next->data << endl;
+        } else {
+            cout << "No next element." << endl;
+        }
+    }
+
+    // Wyświetlenie poprzedniego elementu przed danym elementem (indeks)
+    void displayPrev(int index) const {
+        Node* current = head;
+        int count = 0;
+
+        while (current != nullptr && count < index) {
+            current = current->next;
+            count++;
+        }
+
+        if (current != nullptr && current->prev != nullptr) {
+            cout << "Previous element: " << current->prev->data << endl;
+        } else {
+            cout << "No previous element." << endl;
+        }
+    }
+
+    // Usunięcie wszystkich elementów z listy
+    void clear() {
+        while (head != nullptr) {
+            removeFront();
+        }
+    }
+};
+
+// Przykład użycia listy dwukierunkowej
+int main() {
+    DoublyLinkedList list;
+
+    list.addFront(10);
+    list.addBack(20);
+    list.addBack(30);
+    list.addFront(5);
+    list.addAtIndex(2, 15);
+
+    cout << "Lista: ";
+    list.display();
+
+    cout << "Lista (odwrotnie): ";
+    list.displayReverse();
+
+    list.removeFront();
+    list.removeBack();
+
+    cout << "Lista po usunięciu z początku i końca: ";
+    list.display();
+
+    list.removeAtIndex(1);
+
+    cout << "Lista po usunięciu elementu z indeksu 1: ";
+    list.display();
+
+    list.displayNext(0);
+    list.displayPrev(1);
+
+    list.clear();
+    cout << "Lista po wyczyszczeniu: ";
+    list.display();
+
+    return 0;
+}
