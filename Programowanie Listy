@@ -56,6 +56,43 @@ public:
         tail = newNode;               // Nowy wezel staje sie koncem
     }
 
+    // Dodanie elementu pod wskazany indeks
+    void addAtIndex(int index, int value) {
+        if (index == 0) {
+            addFront(value);          // Jesli indeks to 0, dodaj na poczatek
+            return;
+        }
+
+        Node* current = head;
+        int count = 0;
+
+        // Przejdz do miejsca w liscie wskazanego przez indeks
+        while (current != nullptr && count < index - 1) {
+            current = current->next;
+            count++;
+        }
+
+        if (current == nullptr) {
+            cout << "Indeks poza zakresem!" << endl;
+            return;
+        }
+
+        // Tworzymy nowy wezel i wstawiamy go w odpowiednim miejscu
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->next = current->next;
+        newNode->prev = current;
+
+        if (current->next != nullptr) {
+            current->next->prev = newNode;   // Ustawiamy wskaźnik wsteczny dla nastepnego wezla
+        }
+        else {
+            tail = newNode;                  // Jesli dodajemy na koniec, aktualizujemy ogon
+        }
+
+        current->next = newNode;             // Aktualizujemy wskaźnik nastepny dla biezacego wezla
+    }
+
     // Usuniecie elementu z poczatku listy
     void removeFront() {
         if (head == nullptr) return;  // Sprawdzamy, czy lista nie jest pusta
@@ -112,6 +149,39 @@ public:
         cout << endl;
     }
 
+    // Znajdz wezel na podstawie indeksu
+    Node* findNode(int index) {
+        Node* current = head;
+        int count = 0;
+        while (current != nullptr && count < index) {
+            current = current->next;
+            count++;
+        }
+        return current;  // Zwraca nullptr, jesli indeks poza zasiegiem
+    }
+
+    // Wyswietlenie nastepnego elementu
+    void displayNext(int index) {
+        Node* current = findNode(index);
+        if (current != nullptr && current->next != nullptr) {
+            cout << "Nastepny element: " << current->next->data << endl;
+        }
+        else {
+            cout << "Brak nastepnego elementu" << endl;
+        }
+    }
+
+    // Wyswietlenie poprzedniego elementu
+    void displayPrev(int index) {
+        Node* current = findNode(index);
+        if (current != nullptr && current->prev != nullptr) {
+            cout << "Poprzedni element: " << current->prev->data << endl;
+        }
+        else {
+            cout << "Brak poprzedniego elementu" << endl;
+        }
+    }
+
     // Usuniecie wszystkich elementow listy
     void clear() {
         while (head != nullptr) {     // Dopoki lista nie jest pusta
@@ -132,8 +202,15 @@ int main() {
     cout << "Lista: ";
     list.display();                   // Wyswietlamy liste
 
+    cout << "Dodajemy element 15 pod indeks 2:" << endl;
+    list.addAtIndex(2, 15);           // Dodajemy element o wartosci 15 pod indeks 2
+    list.display();                   // Wyswietlamy liste
+
     cout << "Lista (odwrotnie): ";
     list.displayReverse();            // Wyswietlamy liste w odwrotnej kolejnosci
+
+    list.displayNext(1);              // Wyswietlamy nastepny element wzgledem indeksu 1
+    list.displayPrev(2);              // Wyswietlamy poprzedni element wzgledem indeksu 2
 
     list.removeFront();               // Usuwamy element z poczatku
     cout << "Po usunieciu z poczatku: ";
