@@ -1,1 +1,1 @@
-Elo żelo
+To repozytorium zawiera implementację struktury danych listy dwukierunkowej w języku C++. Lista umożliwia dodawanie, usuwanie oraz poruszanie się po elementach zarówno od początku, jak i od końca. Obsługuje również wstawianie elementu pod wskazany indeks, a także metody do wyświetlania elementów w kolejności i w odwrotnej kolejności.
