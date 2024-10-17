@@ -2,79 +2,79 @@
 
 using namespace std;
 
-// Definicja pojedynczego węzła listy
+// Definicja pojedynczego wezla listy
 struct Node {
-    int data;       // wartość przechowywana w węźle
-    Node* next;     // wskaźnik na następny węzeł
-    Node* prev;     // wskaźnik na poprzedni węzeł
+    int data;       // wartosc przechowywana w wezle
+    Node* next;     // wskaznik na nastepny wezel
+    Node* prev;     // wskaznik na poprzedni wezel
 };
 
-// Klasa implementująca listę dwukierunkową
+// Klasa implementujaca liste dwukierunkowa
 class DoublyLinkedList {
 private:
-    Node* head;     // wskaźnik na pierwszy element (głowę)
-    Node* tail;     // wskaźnik na ostatni element (ogon)
+    Node* head;     // wskaznik na pierwszy element (glowe)
+    Node* tail;     // wskaznik na ostatni element (ogon)
 
 public:
-    // Konstruktor - tworzy pustą listę
+    // Konstruktor - tworzy pusta liste
     DoublyLinkedList() {
         head = nullptr;
         tail = nullptr;
     }
 
-    // Dodanie elementu na początek listy
+    // Dodanie elementu na poczatek listy
     void addFront(int value) {
-        Node* newNode = new Node();   // Tworzymy nowy węzeł
-        newNode->data = value;        // Ustawiamy jego wartość
-        newNode->next = head;         // Nowy węzeł wskazuje na dotychczasowy początek
-        newNode->prev = nullptr;      // Nowy węzeł nie ma poprzednika
+        Node* newNode = new Node();   // Tworzymy nowy wezel
+        newNode->data = value;        // Ustawiamy jego wartosc
+        newNode->next = head;         // Nowy wezel wskazuje na dotychczasowy poczatek
+        newNode->prev = nullptr;      // Nowy wezel nie ma poprzednika
 
         if (head != nullptr) {
-            head->prev = newNode;     // Jeśli lista nie jest pusta, stary początek wskazuje na nowy węzeł
+            head->prev = newNode;     // Jesli lista nie jest pusta, stary poczatek wskazuje na nowy wezel
         }
         else {
-            tail = newNode;           // Jeśli lista była pusta, nowy węzeł staje się także końcem
+            tail = newNode;           // Jesli lista byla pusta, nowy wezel staje sie takze koncem
         }
 
-        head = newNode;               // Nowy węzeł staje się początkiem
+        head = newNode;               // Nowy wezel staje sie poczatkiem
     }
 
     // Dodanie elementu na koniec listy
     void addBack(int value) {
-        Node* newNode = new Node();   // Tworzymy nowy węzeł
-        newNode->data = value;        // Ustawiamy jego wartość
-        newNode->next = nullptr;      // Nowy węzeł nie ma następcy
-        newNode->prev = tail;         // Nowy węzeł wskazuje na dotychczasowy koniec
+        Node* newNode = new Node();   // Tworzymy nowy wezel
+        newNode->data = value;        // Ustawiamy jego wartosc
+        newNode->next = nullptr;      // Nowy wezel nie ma nastepcy
+        newNode->prev = tail;         // Nowy wezel wskazuje na dotychczasowy koniec
 
         if (tail != nullptr) {
-            tail->next = newNode;     // Jeśli lista nie jest pusta, stary koniec wskazuje na nowy węzeł
+            tail->next = newNode;     // Jesli lista nie jest pusta, stary koniec wskazuje na nowy wezel
         }
         else {
-            head = newNode;           // Jeśli lista była pusta, nowy węzeł staje się także początkiem
+            head = newNode;           // Jesli lista byla pusta, nowy wezel staje sie takze poczatkiem
         }
 
-        tail = newNode;               // Nowy węzeł staje się końcem
+        tail = newNode;               // Nowy wezel staje sie koncem
     }
 
-    // Usunięcie elementu z początku listy
+    // Usuniecie elementu z poczatku listy
     void removeFront() {
         if (head == nullptr) return;  // Sprawdzamy, czy lista nie jest pusta
 
-        Node* temp = head;            // Tymczasowo przechowujemy obecny początek
+        Node* temp = head;            // Tymczasowo przechowujemy obecny poczatek
 
         if (head->next != nullptr) {
-            head = head->next;        // Ustawiamy nowy początek
-            head->prev = nullptr;     // Usuwamy wskaźnik na poprzedni element
+            head = head->next;        // Ustawiamy nowy poczatek
+            head->prev = nullptr;     // Usuwamy wskaznik na poprzedni element
         }
         else {
-            head = nullptr;           // Jeśli był to jedyny element, lista staje się pusta
+            head = nullptr;           // Jesli byl to jedyny element, lista staje sie pusta
             tail = nullptr;
         }
 
-        delete temp;                  // Usuwamy stary początek
+        delete temp;                  // Usuwamy stary poczatek
     }
 
-    // Usunięcie elementu z końca listy
+    // Usuniecie elementu z konca listy
     void removeBack() {
         if (tail == nullptr) return;  // Sprawdzamy, czy lista nie jest pusta
 
@@ -82,30 +82,45 @@ public:
 
         if (tail->prev != nullptr) {
             tail = tail->prev;        // Ustawiamy nowy koniec
-            tail->next = nullptr;     // Usuwamy wskaźnik na następny element
+            tail->next = nullptr;     // Usuwamy wskaznik na nastepny element
         }
         else {
-            head = nullptr;           // Jeśli był to jedyny element, lista staje się pusta
+            head = nullptr;           // Jesli byl to jedyny element, lista staje sie pusta
             tail = nullptr;
         }
 
         delete temp;                  // Usuwamy stary koniec
     }
 
-    // Wyświetlenie wszystkich elementów listy
+    // Wyswietlenie wszystkich elementow listy
     void display() {
-        Node* current = head;         // Zaczynamy od początku
+        Node* current = head;         // Zaczynamy od poczatku
         while (current != nullptr) {
-            cout << current->data << " ";  // Wyświetlamy wartość węzła
-            current = current->next;       // Przechodzimy do następnego węzła
+            cout << current->data << " ";  // Wyswietlamy wartosc wezla
+            current = current->next;       // Przechodzimy do nastepnego wezla
         }
         cout << endl;
     }
 
+    // Wyswietlenie listy w odwrotnej kolejnosci
+    void displayReverse() {
+        Node* current = tail;         // Zaczynamy od konca
+        while (current != nullptr) {
+            cout << current->data << " ";  // Wyswietlamy wartosc wezla
+            current = current->prev;       // Przechodzimy do poprzedniego wezla
+        }
+        cout << endl;
+    }
 
+    // Usuniecie wszystkich elementow listy
+    void clear() {
+        while (head != nullptr) {     // Dopoki lista nie jest pusta
+            removeFront();            // Usuwamy element z poczatku
+        }
+    }
 };
 
-// Program główny, testowanie listy dwukierunkowej
+// Program glowny, testowanie listy dwukierunkowej
 int main() {
     DoublyLinkedList list;
 
@@ -115,17 +130,22 @@ int main() {
     list.addBack(30);
 
     cout << "Lista: ";
-    list.display();                   // Wyświetlamy listę
+    list.display();                   // Wyswietlamy liste
 
-    list.removeFront();               // Usuwamy element z początku
+    cout << "Lista (odwrotnie): ";
+    list.displayReverse();            // Wyswietlamy liste w odwrotnej kolejnosci
+
+    list.removeFront();               // Usuwamy element z poczatku
     cout << "Po usunieciu z poczatku: ";
-    list.display();                   // Wyświetlamy listę
+    list.display();                   // Wyswietlamy liste
 
-    list.removeBack();                // Usuwamy element z końca
-    cout << "Po usunieciu z koca: ";
-    list.display();                   // Wyświetlamy listę
+    list.removeBack();                // Usuwamy element z konca
+    cout << "Po usunieciu z konca: ";
+    list.display();                   // Wyswietlamy liste
 
-  
+    list.clear();                     // Usuwamy wszystkie elementy z listy
+    cout << "Po wyczyszczeniu: ";
+    list.display();                   // Lista powinna byc pusta
 
     return 0;
 }
